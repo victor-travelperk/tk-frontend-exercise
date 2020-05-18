@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react"
+import styled from "styled-components"
+import { PageHeader } from "../shared/components"
 import { Recipe, Ingredient } from "./types"
 
-export const LIST_RECIPES_URL = "http://localhost:8000/api/recipe/recipes"
+export const LIST_RECIPES_URL = "http://localhost:8000/api/recipe/recipes/"
 
 export const formatIngredients = (ingredients: Ingredient[]) =>
-  ingredients.map((ingredient) => ingredient.name).join(",")
+  ingredients.map((ingredient) => ingredient.name).join(", ")
+
+const Wrapper = styled.div`
+  max-width: 1280px;
+  width 100%;
+  margin: 0 auto;
+`
 
 export const ListRecipes = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([])
