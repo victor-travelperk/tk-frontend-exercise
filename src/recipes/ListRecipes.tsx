@@ -23,7 +23,8 @@ export const ListRecipes = () => {
       .then((data) => setRecipes(data))
   }, [])
   return (
-    <div>
+    <Wrapper>
+      <PageHeader>Recipe Library</PageHeader>
       {recipes.map((recipe) => (
         <div key={recipe.name}>
           <h2>{recipe.name}</h2>
@@ -33,6 +34,6 @@ export const ListRecipes = () => {
           <p>{formatIngredients(recipe.ingredients)}</p>
         </div>
       ))}
-    </div>
+    </Wrapper>
   )
 }
