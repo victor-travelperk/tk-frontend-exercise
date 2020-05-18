@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { PageHeader } from "../shared/components"
-import { Recipe, Ingredient } from "./types"
+import { Recipe } from "./types"
+import { RecipeCard } from "./components"
 
 export const LIST_RECIPES_URL = "http://localhost:8000/api/recipe/recipes/"
 
-export const formatIngredients = (ingredients: Ingredient[]) =>
-  ingredients.map((ingredient) => ingredient.name).join(", ")
-
-const Wrapper = styled.div`
+const Wrapper = styled.section`
   max-width: 1280px;
   width 100%;
   margin: 0 auto;
+`
+
+const RecipeList = styled.div`
+  display: grid;
+  grid-row-gap: 0.5rem;
 `
 
 export const ListRecipes = () => {
@@ -25,15 +28,14 @@ export const ListRecipes = () => {
   return (
     <Wrapper>
       <PageHeader>Recipe Library</PageHeader>
-      {recipes.map((recipe) => (
-        <div key={recipe.name}>
-          <h2>{recipe.name}</h2>
-          <hr />
-          <p>{recipe.description}</p>
-          <h3>Ingredients:</h3>
-          <p>{formatIngredients(recipe.ingredients)}</p>
-        </div>
-      ))}
+
+      <RecipeList>
+        {recipes.map((recipe) => (
+          <div key={recipe.name}>
+            <RecipeCard recipe={recipe} />
+          </div>
+        ))}
+      </RecipeList>
     </Wrapper>
   )
 }

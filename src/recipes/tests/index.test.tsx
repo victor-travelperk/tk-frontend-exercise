@@ -2,14 +2,11 @@ import React from "react"
 import { act, render, screen } from "@testing-library/react"
 import fetchMock from "fetch-mock"
 
-import {
-  ListRecipes,
-  LIST_RECIPES_URL,
-  formatIngredients,
-} from "../ListRecipes"
+import { ListRecipes, LIST_RECIPES_URL } from "../ListRecipes"
+import { formatIngredients } from "../utils/formatting"
 import { recipeList } from "./stubs"
 
-test("renders default route", async () => {
+it("renders default route", async () => {
   fetchMock.get(LIST_RECIPES_URL, recipeList)
   await act(async () => {
     render(<ListRecipes />)
