@@ -38,6 +38,10 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.1.5"
+    "@types/faker": "^4.1.12",
+    "@types/react-router-dom": "^5.1.5",
+    "faker": "^4.1.0",
+    "fetch-mock": "^9.9.0",
+    "node-fetch": "^2.6.0"
   }
 }
