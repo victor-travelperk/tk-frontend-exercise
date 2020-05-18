@@ -1,12 +1,25 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import { Normalize } from "styled-normalize"
-import App from "./App"
+import { createGlobalStyle } from "styled-components"
+import { normalize } from "styled-normalize"
+import App from "./app/App"
 import * as serviceWorker from "./serviceWorker"
+
+const GlobalStyle = createGlobalStyle`
+  ${normalize}
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Balsamiq Sans', cursive;
+  }
+`
 
 ReactDOM.render(
   <React.StrictMode>
-    <Normalize />
+    <GlobalStyle />
     <App />
   </React.StrictMode>,
   document.getElementById("root"),
