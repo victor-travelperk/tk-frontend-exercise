@@ -1,7 +1,7 @@
 import faker from "faker"
 import { Recipe } from "../types"
 
-export const recipeList: Recipe[] = [
+export const getRecipe = (): Recipe => (
   {
     id: faker.random.number(),
     name: faker.random.words(2),
@@ -11,5 +11,4 @@ export const recipeList: Recipe[] = [
         name: faker.random.word(),
       },
     ],
-  },
-]
+  })

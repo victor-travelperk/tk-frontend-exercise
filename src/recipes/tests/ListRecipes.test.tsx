@@ -5,7 +5,7 @@ import fetchMock from "fetch-mock"
 
 import { ListRecipes, LIST_RECIPES_URL } from "../ListRecipes"
 import { formatIngredients } from "../utils/formatting"
-import { recipeList } from "./stubs"
+import { getRecipe } from "./stubs"
 
 afterEach(() => {
   fetchMock.reset()
@@ -20,17 +20,16 @@ const renderListRecipes = () =>
 
 describe("ListRecipes", () => {
   it("renders recipe data", async () => {
-    fetchMock.get(LIST_RECIPES_URL, recipeList)
+    const recipe = getRecipe()
+    fetchMock.get(LIST_RECIPES_URL, [recipe])
     await act(async () => {
       renderListRecipes()
     })
-    for (const recipe of recipeList) {
-      expect(screen.getByText(recipe.name)).toBeInTheDocument()
-      expect(screen.getByText(recipe.description)).toBeInTheDocument()
-      expect(
-        screen.getByText(formatIngredients(recipe.ingredients)),
-      ).toBeInTheDocument()
-    }
+    expect(screen.getByText(recipe.name)).toBeInTheDocument()
+    expect(screen.getByText(recipe.description)).toBeInTheDocument()
+    expect(
+      screen.getByText(formatIngredients(recipe.ingredients)),
+    ).toBeInTheDocument()
   })
 
   it("renders default message if no data is present", async () => {
