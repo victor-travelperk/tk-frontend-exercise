@@ -1,5 +1,10 @@
 import React from "react"
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom"
 
 import { NavBar } from "./components"
 import { CreateRecipe, ListRecipes, URLS } from "../recipes"
@@ -9,12 +14,13 @@ const App = () => (
     <Router>
       <NavBar />
       <Switch>
-        <Route path={URLS.CREATE}>
+        <Route exact path={URLS.CREATE}>
           <CreateRecipe />
         </Route>
-        <Route path={URLS.LIST}>
+        <Route exact path={URLS.LIST}>
           <ListRecipes />
         </Route>
+        <Redirect to={URLS.LIST} />
       </Switch>
     </Router>
   </div>
