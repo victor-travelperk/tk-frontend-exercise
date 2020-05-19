@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { PageHeader } from "../shared/components"
+import { PageHeader, Wrapper } from "../shared/components"
 import { Recipe } from "./types"
 import {
   RecipeCard,
@@ -9,12 +9,6 @@ import {
 } from "./components"
 
 export const LIST_RECIPES_URL = "http://localhost:8000/api/recipe/recipes/"
-
-const Wrapper = styled.section`
-  max-width: 1280px;
-  width 100%;
-  margin: 0 auto;
-`
 
 const RecipeList = styled.div`
   display: grid;
