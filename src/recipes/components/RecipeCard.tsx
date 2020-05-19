@@ -5,7 +5,7 @@ import { formatIngredients } from "../utils/formatting"
 import { Recipe } from "../types"
 
 const Wrapper = styled.div`
-  border: 3px solid black;
+  border: 0.1875rem solid black;
   padding: 1rem;
 `
 

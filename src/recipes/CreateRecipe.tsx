@@ -65,7 +65,7 @@ export const CreateRecipe = () => {
 
   return (
     <>
-      <Wrapper maxWidth="300px">
+      <Wrapper maxWidth="18.75rem">
         <PageHeader>Create Recipe</PageHeader>
         <form onSubmit={handleSubmit}>
           {notification && (

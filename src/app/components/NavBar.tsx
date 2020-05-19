@@ -6,7 +6,7 @@ import { COLORS } from "../../shared/styles"
 import { URLS as recipesURLS } from "../../recipes"
 
 const Wrapper = styled.nav`
-  border-bottom: 1px solid ${COLORS.CULTURED};
+  border-bottom: 0.0625rem solid ${COLORS.CULTURED};
 `
 
 const List = styled.ul`
