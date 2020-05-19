@@ -44,7 +44,7 @@ export const ListRecipes = () => {
       {!error && (
         <RecipeList>
           {recipes.map((recipe) => (
-            <div key={recipe.name}>
+            <div key={recipe.id}>
               <RecipeCard recipe={recipe} />
             </div>
           ))}
