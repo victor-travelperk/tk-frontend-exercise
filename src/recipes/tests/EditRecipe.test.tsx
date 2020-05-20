@@ -1,5 +1,5 @@
 import React from "react"
-import { render, fireEvent, screen } from "@testing-library/react"
+import { act, render, fireEvent, screen } from "@testing-library/react"
 import { MemoryRouter, generatePath, Route } from "react-router-dom"
 import fetchMock from "fetch-mock"
 
@@ -90,11 +90,13 @@ describe("EditRecipe", () => {
     ).toBeInTheDocument()
   })
 
-  it.only("renders error when server error occurs while getting the recipe data", async () => {
+  it("renders error when server error occurs while getting the recipe data", async () => {
     const editUrl = getEditRecipe(recipe.id)
     fetchMock.get(editUrl, 500)
 
-    renderEditRecipe()
+    await act(async () => {
+      renderEditRecipe()
+    })
 
     expect(
       await screen.findByText("Couldn't load the recipe data"),
@@ -105,7 +107,9 @@ describe("EditRecipe", () => {
     const editUrl = getEditRecipe(recipe.id)
     fetchMock.get(editUrl, recipe).patch(editUrl, 500)
 
-    renderEditRecipe()
+    await act(async () => {
+      renderEditRecipe()
+    })
 
     // Save recipe with same values to trigger the save functionality
     fireEvent.click(screen.getByText("Update"))

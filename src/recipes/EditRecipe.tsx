@@ -69,19 +69,23 @@ export const EditRecipe = () => {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
       body: serializeRecipe(name, description, ingredients),
-    }).then((response) => {
-      if (response.ok) {
-        setNotification({
-          type: "SUCCESS",
-          content: "Recipe updated successfully!",
-        })
-      } else {
+    })
+      .then((response) => {
+        if (response.ok) {
+          setNotification({
+            type: "SUCCESS",
+            content: "Recipe updated successfully!",
+          })
+          return
+        }
+        throw new Error("Non-successful status code")
+      })
+      .catch(() => {
         setNotification({
           type: "DANGER",
           content: "Error creating recipe",
         })
-      }
-    })
+      })
   }
 
   return (
