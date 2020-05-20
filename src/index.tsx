@@ -2,7 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { createGlobalStyle } from "styled-components"
 import { normalize } from "styled-normalize"
-import App from "./app/App"
+import { App } from "./app/App"
 import * as serviceWorker from "./serviceWorker"
 
 const GlobalStyle = createGlobalStyle`

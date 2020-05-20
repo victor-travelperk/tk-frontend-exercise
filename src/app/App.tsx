@@ -9,7 +9,7 @@ import {
 import { NavBar } from "./components"
 import { CreateRecipe, ListRecipes, EditRecipe, URLS } from "../recipes"
 
-const App = () => (
+export const App = () => (
   <div>
     <Router>
       <NavBar />
@@ -28,5 +28,3 @@ const App = () => (
     </Router>
   </div>
 )
-
-export default App
