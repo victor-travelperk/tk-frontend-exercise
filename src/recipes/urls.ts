@@ -1,4 +1,5 @@
 export const URLS = {
   CREATE: '/recipes/create',
-  LIST: '/recipes'
+  LIST: '/recipes',
+  EDIT: '/recipes/edit/:id',
 }

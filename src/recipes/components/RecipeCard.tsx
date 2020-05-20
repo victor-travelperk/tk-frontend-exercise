@@ -1,12 +1,24 @@
 import React from "react"
 import styled from "styled-components"
+import { Link, generatePath } from "react-router-dom"
 
 import { formatIngredients } from "../utils/formatting"
 import { Recipe } from "../types"
+import { URLS } from "../urls"
 
 const Wrapper = styled.div`
   border: 0.1875rem solid black;
   padding: 1rem;
+`
+
+const EditLink = styled(Link)`
+  border: 0.1875rem solid black;
+  padding: 0.5rem;
+`
+
+const ActionsWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `
 
 type Props = {
@@ -20,5 +32,8 @@ export const RecipeCard = ({ recipe }: Props) => (
     <p>{recipe.description}</p>
     <h3>Ingredients:</h3>
     <p>{formatIngredients(recipe.ingredients)}</p>
+    <ActionsWrapper>
+      <EditLink to={generatePath(URLS.EDIT, { id: recipe.id })}>Edit</EditLink>
+    </ActionsWrapper>
   </Wrapper>
 )

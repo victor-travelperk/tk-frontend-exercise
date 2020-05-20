@@ -7,7 +7,7 @@ import {
 } from "react-router-dom"
 
 import { NavBar } from "./components"
-import { CreateRecipe, ListRecipes, URLS } from "../recipes"
+import { CreateRecipe, ListRecipes, EditRecipe, URLS } from "../recipes"
 
 const App = () => (
   <div>
@@ -19,6 +19,9 @@ const App = () => (
         </Route>
         <Route exact path={URLS.LIST}>
           <ListRecipes />
+        </Route>
+        <Route exact path={URLS.EDIT}>
+          <EditRecipe />
         </Route>
         <Redirect to={URLS.LIST} />
       </Switch>
