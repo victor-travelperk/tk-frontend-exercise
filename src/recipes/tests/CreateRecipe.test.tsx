@@ -103,4 +103,26 @@ describe("CreateRecipe", () => {
 
     expect(await screen.findByText("Error creating recipe")).toBeInTheDocument()
   })
+
+  it("can remove ingredients before creating recipe", () => {
+    renderCreateRecipe()
+
+    const ingredients = [faker.random.word(), faker.random.word()]
+
+    for (const ingredient of ingredients) {
+      fireEvent.change(screen.getByPlaceholderText("New ingredient"), {
+        target: { value: ingredient },
+      })
+      fireEvent.click(screen.getByText("ADD"))
+
+      // New ingredient should've been added to the list
+      expect(screen.getByText(ingredient)).toBeInTheDocument()
+
+      // Remove ingredient
+      fireEvent.click(screen.getByLabelText(`remove ingredient ${ingredient}`))
+
+      // Ingredient should not be gone
+      expect(screen.queryByText(ingredient)).not.toBeInTheDocument()
+    }
+  })
 })

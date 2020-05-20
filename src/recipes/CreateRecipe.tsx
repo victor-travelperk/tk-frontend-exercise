@@ -2,7 +2,14 @@ import React, { useState } from "react"
 
 import { COLORS } from "../shared/styles"
 import { PageHeader, Wrapper } from "../shared/components"
-import { Button, Label, TextArea, Notification, Input } from "./components"
+import {
+  Button,
+  ButtonRemoveItem,
+  Label,
+  TextArea,
+  Notification,
+  Input,
+} from "./components"
 import { NotificationType } from "./components/Notification"
 
 export const CREATE_RECIPE_URL = "http://127.0.0.1:8000/api/recipe/recipes/"
@@ -31,6 +38,13 @@ export const CreateRecipe = () => {
   const addIngredient = () => {
     setIngredients(ingredients.concat([newIngredient]))
     setNewIngredient("")
+  }
+
+  const removeIngredient = (indexToRemove: number) => {
+    const newIngredients = ingredients.filter(
+      (_, index) => index !== indexToRemove,
+    )
+    setIngredients(newIngredients)
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -116,7 +130,16 @@ export const CreateRecipe = () => {
               <p>You must add at least one ingredient*</p>
             )}
             {ingredients.map((ingredient, index) => (
-              <li key={index}>{ingredient}</li>
+              <li key={index}>
+                {ingredient}{" "}
+                <ButtonRemoveItem
+                  type="button"
+                  aria-label={`remove ingredient ${ingredient}`}
+                  onClick={() => removeIngredient(index)}
+                >
+                  X
+                </ButtonRemoveItem>
+              </li>
             ))}
           </ul>
 
