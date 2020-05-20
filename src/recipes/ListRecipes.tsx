@@ -79,7 +79,13 @@ export const ListRecipes = () => {
         </NoRecipesPlaceholder>
       )}
       {recipes && (
-        <div style={{ display: "grid", gridRowGap: "0.5rem" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "100%",
+            gridRowGap: "0.5rem",
+          }}
+        >
           {recipes.map((recipe) => (
             <div key={recipe.id}>
               <RecipeCard
