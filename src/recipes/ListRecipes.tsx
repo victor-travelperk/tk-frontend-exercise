@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { PageHeader, Wrapper } from "../shared/components"
+import { Box, PageHeader, Wrapper } from "../shared/components"
 import { Recipe } from "./types"
 import { RecipeCard, NoRecipesPlaceholder, Notification } from "./components"
 import { NotificationType } from "./components/Notification"
@@ -72,9 +72,11 @@ export const ListRecipes = () => {
     <Wrapper>
       <PageHeader>Recipe Library</PageHeader>
       {notification && (
-        <Notification type={notification.type}>
-          {notification.content}
-        </Notification>
+        <Box mb="2">
+          <Notification type={notification.type}>
+            {notification.content}
+          </Notification>
+        </Box>
       )}
       {showEmtpyPlaceholder && (
         <NoRecipesPlaceholder>

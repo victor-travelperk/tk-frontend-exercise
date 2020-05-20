@@ -2,6 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { Link, generatePath } from "react-router-dom"
 
+import { Box } from "../../shared/components"
 import { formatIngredients } from "../utils/formatting"
 import { Recipe } from "../types"
 import { URLS } from "../urls"
@@ -40,12 +41,14 @@ export const RecipeCard = ({ recipe, onDelete }: Props) => (
     <h3>Ingredients:</h3>
     <p>{formatIngredients(recipe.ingredients)}</p>
     <ActionsWrapper>
-      <RemoveRecipeButton
-        aria-label={`remove recipe ${recipe.name}`}
-        onClick={onDelete}
-      >
-        Delete
-      </RemoveRecipeButton>
+      <Box mr="1">
+        <RemoveRecipeButton
+          aria-label={`remove recipe ${recipe.name}`}
+          onClick={onDelete}
+        >
+          Delete
+        </RemoveRecipeButton>
+      </Box>
       <EditLink to={generatePath(URLS.EDIT, { id: recipe.id })}>Edit</EditLink>
     </ActionsWrapper>
   </Wrapper>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 
-import { PageHeader, Wrapper } from "../shared/components"
+import { Box, PageHeader, Wrapper } from "../shared/components"
 import { COLORS } from "../shared/styles"
 import {
   Button,
@@ -89,13 +89,13 @@ export const EditRecipe = () => {
       <PageHeader>Edit Recipe</PageHeader>
       <form onSubmit={handleSubmit}>
         {notification && (
-          <div style={{ marginBottom: "1rem" }}>
+          <Box mb="2">
             <Notification type={notification.type}>
               {notification.content}
             </Notification>
-          </div>
+          </Box>
         )}
-        <div style={{ marginBottom: "1rem" }}>
+        <Box mb="2">
           <Label htmlFor="name">Name*</Label>
           <Input
             value={name}
@@ -104,9 +104,9 @@ export const EditRecipe = () => {
             type="text"
             required
           ></Input>
-        </div>
+        </Box>
 
-        <div style={{ marginBottom: "1rem" }}>
+        <Box mb="2">
           <Label htmlFor="description">Description*</Label>
           <TextArea
             id="description"
@@ -114,7 +114,7 @@ export const EditRecipe = () => {
             onChange={(event) => setDescription(event.target.value)}
             required
           ></TextArea>
-        </div>
+        </Box>
 
         <h2>Ingredients*</h2>
         <div>

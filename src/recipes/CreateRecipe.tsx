@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 
 import { COLORS } from "../shared/styles"
-import { PageHeader, Wrapper } from "../shared/components"
+import { Box, PageHeader, Wrapper } from "../shared/components"
 import {
   Button,
   ButtonRemoveItem,
@@ -76,13 +76,13 @@ export const CreateRecipe = () => {
         <PageHeader>Create Recipe</PageHeader>
         <form onSubmit={handleSubmit}>
           {notification && (
-            <div style={{ marginBottom: "1rem" }}>
+            <Box mb="2">
               <Notification type={notification.type}>
                 {notification.content}
               </Notification>
-            </div>
+            </Box>
           )}
-          <div style={{ marginBottom: "1rem" }}>
+          <Box mb="2">
             <Label htmlFor="name">Name*</Label>
             <Input
               value={name}
@@ -93,9 +93,9 @@ export const CreateRecipe = () => {
               required
               maxLength={50}
             ></Input>
-          </div>
+          </Box>
 
-          <div style={{ marginBottom: "1rem" }}>
+          <Box mb="2">
             <Label htmlFor="description">Description*</Label>
             <TextArea
               id="description"
@@ -105,7 +105,7 @@ export const CreateRecipe = () => {
               required
               maxLength={250}
             ></TextArea>
-          </div>
+          </Box>
 
           <h2>Ingredients*</h2>
           <div>
