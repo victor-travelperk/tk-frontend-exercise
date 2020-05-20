@@ -17,12 +17,6 @@ import {
 import { formatIngredients } from "../utils/formatting"
 import { getRecipe } from "./stubs"
 
-fetchMock.config.overwriteRoutes = true
-
-afterEach(() => {
-  fetchMock.reset()
-})
-
 const renderListRecipes = () =>
   render(
     <MemoryRouter>
