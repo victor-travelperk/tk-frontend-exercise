@@ -88,6 +88,9 @@ export const EditRecipe = () => {
       })
   }
 
+  const submitDisabled =
+    name === "" || description === "" || ingredients.length === 0
+
   return (
     <Wrapper maxWidth="18.75rem">
       <PageHeader>Edit Recipe</PageHeader>
@@ -156,7 +159,9 @@ export const EditRecipe = () => {
           ))}
         </ul>
 
-        <Button type="submit">Update</Button>
+        <Button type="submit" disabled={submitDisabled}>
+          Update
+        </Button>
       </form>
     </Wrapper>
   )
