@@ -89,6 +89,18 @@ describe("EditRecipe", () => {
       await screen.findByText("Recipe updated successfully!"),
     ).toBeInTheDocument()
   })
+
+  it.only("renders error when server error occurs while getting the recipe data", async () => {
+    const editUrl = getEditRecipe(recipe.id)
+    fetchMock.get(editUrl, 500)
+
+    renderEditRecipe()
+
+    expect(
+      await screen.findByText("Couldn't load the recipe data"),
+    ).toBeInTheDocument()
+  })
+
   it("renders error message when server error occurs during update", async () => {
     const editUrl = getEditRecipe(recipe.id)
     fetchMock.get(editUrl, recipe).patch(editUrl, 500)

@@ -43,12 +43,23 @@ export const EditRecipe = () => {
 
   useEffect(() => {
     fetch(getEditRecipe(id))
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        }
+        throw new Error("Non-successful status code")
+      })
       .then((data: Recipe) => {
         setName(data.name)
         setDescription(data.description)
         setIngredients(data.ingredients.map((ingredient) => ingredient.name))
       })
+      .catch(() =>
+        setNotification({
+          type: "DANGER",
+          content: "Couldn't load the recipe data",
+        }),
+      )
   }, [id])
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
