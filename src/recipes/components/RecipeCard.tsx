@@ -3,22 +3,25 @@ import styled from "styled-components"
 import { Link, generatePath } from "react-router-dom"
 
 import { Box } from "../../shared/components"
+import { COLORS } from "../../shared/styles"
 import { formatIngredients } from "../utils/formatting"
 import { Recipe } from "../types"
 import { URLS } from "../urls"
 
 const Wrapper = styled.div`
-  border: 0.1875rem solid black;
+  border: 0.1875rem solid ${COLORS.BLACK};
   padding: 1rem;
 `
 
 const EditLink = styled(Link)`
-  border: 0.1875rem solid black;
+  border: 0.1875rem solid ${COLORS.BLACK};
   padding: 0.5rem;
+  text-decoration: none;
 `
 
 const RemoveRecipeButton = styled.button`
-  border: 0.1875rem solid black;
+  background: none;
+  border: 0.1875rem solid ${COLORS.BLACK};
   cursor: pointer;
   padding: 0.5rem;
 `

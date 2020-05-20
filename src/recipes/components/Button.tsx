@@ -7,14 +7,14 @@ type Props = {
 }
 
 export const Button = styled.button<Props>`
-  color: ${COLORS.WHITE};
-  background-color: ${(props) => props.backgroundColor || COLORS.CAROLINA_BLUE};
-  border-radius: 0.25rem;
-  border: none;
+  color: ${COLORS.BLACK};
+  background: white;
+  border: 0.1875rem solid ${COLORS.BLACK};
   padding: 0.5rem;
   width: 100%;
 
   &:disabled {
-    background-color: ${COLORS.QUICK_SILVER};
+    color: ${COLORS.CULTURED};
+    border-color: ${COLORS.QUICK_SILVER};
   }
 `
