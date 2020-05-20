@@ -11,19 +11,9 @@ import {
   Input,
 } from "./components"
 import { NotificationType } from "./components/Notification"
+import { serializeRecipe } from "./utils/serializing"
 
 export const CREATE_RECIPE_URL = "http://127.0.0.1:8000/api/recipe/recipes/"
-
-export const serializeRecipe = (
-  name: string,
-  description: string,
-  ingredients: string[],
-) =>
-  JSON.stringify({
-    description,
-    ingredients: ingredients.map((ingredient) => ({ name: ingredient })),
-    name,
-  })
 
 export const CreateRecipe = () => {
   const [name, setName] = useState<string>("")

@@ -4,11 +4,8 @@ import { MemoryRouter } from "react-router-dom"
 import { render, screen, fireEvent } from "@testing-library/react"
 import fetchMock from "fetch-mock"
 
-import {
-  CreateRecipe,
-  CREATE_RECIPE_URL,
-  serializeRecipe,
-} from "../CreateRecipe"
+import { CreateRecipe, CREATE_RECIPE_URL } from "../CreateRecipe"
+import { serializeRecipe } from "../utils/serializing"
 
 const renderCreateRecipe = () =>
   render(
