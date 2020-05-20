@@ -110,6 +110,7 @@ export const EditRecipe = () => {
             id="name"
             type="text"
             required
+            maxLength={50}
           ></Input>
         </Box>
 
@@ -120,6 +121,7 @@ export const EditRecipe = () => {
             value={description}
             onChange={(event) => setDescription(event.target.value)}
             required
+            maxLength={250}
           ></TextArea>
         </Box>
 
@@ -129,6 +131,7 @@ export const EditRecipe = () => {
             onChange={(event) => setNewIngredient(event.target.value)}
             value={newIngredient}
             placeholder="New ingredient"
+            maxLength={50}
           />
           <Button
             type="button"
