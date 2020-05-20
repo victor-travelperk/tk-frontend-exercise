@@ -34,10 +34,10 @@ describe("CreateRecipe", () => {
     expect(screen.getByText("Create Recipe")).toBeInTheDocument()
 
     // Validate form fields
-    fireEvent.change(screen.getByLabelText("Name"), {
+    fireEvent.change(screen.getByLabelText("Name*"), {
       target: { value: newRecipe.name },
     })
-    fireEvent.change(screen.getByLabelText("Description"), {
+    fireEvent.change(screen.getByLabelText("Description*"), {
       target: { value: newRecipe.description },
     })
 
@@ -82,10 +82,10 @@ describe("CreateRecipe", () => {
     }
 
     // Validate form fields
-    fireEvent.change(screen.getByLabelText("Name"), {
+    fireEvent.change(screen.getByLabelText("Name*"), {
       target: { value: newRecipe.name },
     })
-    fireEvent.change(screen.getByLabelText("Description"), {
+    fireEvent.change(screen.getByLabelText("Description*"), {
       target: { value: newRecipe.description },
     })
 

@@ -13,4 +13,8 @@ export const Button = styled.button<Props>`
   border: none;
   padding: 0.5rem;
   width: 100%;
+
+  &:disabled {
+    background-color: ${COLORS.QUICK_SILVER};
+  }
 `

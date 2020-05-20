@@ -67,6 +67,9 @@ export const CreateRecipe = () => {
     setIngredients([])
   }
 
+  const submitDisabled =
+    name === "" || description === "" || ingredients.length === 0
+
   return (
     <>
       <Wrapper maxWidth="18.75rem">
@@ -80,30 +83,37 @@ export const CreateRecipe = () => {
             </div>
           )}
           <div style={{ marginBottom: "1rem" }}>
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">Name*</Label>
             <Input
               value={name}
               onChange={(event) => setName(event.target.value)}
               id="name"
+              name="name"
               type="text"
+              required
+              maxLength={50}
             ></Input>
           </div>
 
           <div style={{ marginBottom: "1rem" }}>
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">Description*</Label>
             <TextArea
               id="description"
+              name="description"
               value={description}
               onChange={(event) => setDescription(event.target.value)}
+              required
+              maxLength={250}
             ></TextArea>
           </div>
 
-          <h2>Ingredients</h2>
+          <h2>Ingredients*</h2>
           <div>
             <Input
               onChange={(event) => setNewIngredient(event.target.value)}
               value={newIngredient}
               placeholder="New ingredient"
+              maxLength={50}
             />
             <Button
               type="button"
@@ -117,7 +127,7 @@ export const CreateRecipe = () => {
 
           <ul>
             {ingredients.length === 0 && (
-              <p>You must add at least one ingredient*</p>
+              <p>You must add at least one ingredient</p>
             )}
             {ingredients.map((ingredient, index) => (
               <li key={index}>
@@ -133,7 +143,9 @@ export const CreateRecipe = () => {
             ))}
           </ul>
 
-          <Button type="submit">Create</Button>
+          <Button type="submit" disabled={submitDisabled}>
+            Create
+          </Button>
         </form>
       </Wrapper>
     </>
