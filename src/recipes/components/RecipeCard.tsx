@@ -4,7 +4,6 @@ import { Link, generatePath } from "react-router-dom"
 
 import { Box } from "../../shared/components"
 import { COLORS } from "../../shared/styles"
-import { formatIngredients } from "../utils/formatting"
 import { Recipe } from "../types"
 import { ROUTES } from "../constants"
 
@@ -14,6 +13,7 @@ const Wrapper = styled.div`
 `
 
 const EditLink = styled(Link)`
+  color: ${COLORS.BLACK};
   border: 0.1875rem solid ${COLORS.BLACK};
   padding: 0.5rem;
   text-decoration: none;
@@ -42,7 +42,11 @@ export const RecipeCard = ({ recipe, onDelete }: Props) => (
     <hr />
     <p>{recipe.description}</p>
     <h3>Ingredients:</h3>
-    <p>{formatIngredients(recipe.ingredients)}</p>
+    <ul>
+      {recipe.ingredients.map((ingredient, index) => (
+        <li key={index}>{ingredient.name}</li>
+      ))}
+    </ul>
     <ActionsWrapper>
       <Box mr="1">
         <RemoveRecipeButton

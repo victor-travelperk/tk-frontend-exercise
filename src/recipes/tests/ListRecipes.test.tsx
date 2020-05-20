@@ -14,7 +14,6 @@ import {
   LIST_RECIPES_URL,
   getRemoveRecipeUrl,
 } from "../ListRecipes"
-import { formatIngredients } from "../utils/formatting"
 import { getRecipe } from "./stubs"
 
 const renderListRecipes = () =>
@@ -33,9 +32,9 @@ describe("ListRecipes", () => {
     })
     expect(screen.getByText(recipe.name)).toBeInTheDocument()
     expect(screen.getByText(recipe.description)).toBeInTheDocument()
-    expect(
-      screen.getByText(formatIngredients(recipe.ingredients)),
-    ).toBeInTheDocument()
+    for (const ingredient of recipe.ingredients) {
+      expect(screen.getByText(ingredient.name)).toBeInTheDocument()
+    }
   })
 
   it("renders default message if no data is present", async () => {
