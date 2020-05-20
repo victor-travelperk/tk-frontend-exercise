@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { Link } from "react-router-dom"
 
 import { COLORS } from "../../shared/styles"
-import { URLS as recipesURLS } from "../../recipes"
+import { ROUTES as recipeRoutes } from "../../recipes"
 
 const Wrapper = styled.nav`
   border-bottom: 0.0625rem solid ${COLORS.CULTURED};
@@ -26,10 +26,10 @@ export const NavBar = () => (
   <Wrapper>
     <List>
       <ListItem>
-        <Link to={recipesURLS.LIST}>List recipes</Link>
+        <Link to={recipeRoutes.LIST}>List recipes</Link>
       </ListItem>
       <ListItem>
-        <Link to={recipesURLS.CREATE}>Create recipe</Link>
+        <Link to={recipeRoutes.CREATE}>Create recipe</Link>
       </ListItem>
     </List>
   </Wrapper>

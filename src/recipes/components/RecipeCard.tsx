@@ -6,7 +6,7 @@ import { Box } from "../../shared/components"
 import { COLORS } from "../../shared/styles"
 import { formatIngredients } from "../utils/formatting"
 import { Recipe } from "../types"
-import { URLS } from "../urls"
+import { ROUTES } from "../constants"
 
 const Wrapper = styled.div`
   border: 0.1875rem solid ${COLORS.BLACK};
@@ -52,7 +52,9 @@ export const RecipeCard = ({ recipe, onDelete }: Props) => (
           Delete
         </RemoveRecipeButton>
       </Box>
-      <EditLink to={generatePath(URLS.EDIT, { id: recipe.id })}>Edit</EditLink>
+      <EditLink to={generatePath(ROUTES.EDIT, { id: recipe.id })}>
+        Edit
+      </EditLink>
     </ActionsWrapper>
   </Wrapper>
 )

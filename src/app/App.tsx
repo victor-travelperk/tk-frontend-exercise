@@ -7,23 +7,23 @@ import {
 } from "react-router-dom"
 
 import { NavBar } from "./components"
-import { CreateRecipe, ListRecipes, EditRecipe, URLS } from "../recipes"
+import { CreateRecipe, ListRecipes, EditRecipe, ROUTES } from "../recipes"
 
 export const App = () => (
   <div>
     <Router>
       <NavBar />
       <Switch>
-        <Route exact path={URLS.CREATE}>
+          <Route exact path={ROUTES.CREATE}>
           <CreateRecipe />
         </Route>
-        <Route exact path={URLS.LIST}>
+          <Route exact path={ROUTES.LIST}>
           <ListRecipes />
         </Route>
-        <Route exact path={URLS.EDIT}>
+          <Route exact path={ROUTES.EDIT}>
           <EditRecipe />
         </Route>
-        <Redirect to={URLS.LIST} />
+          <Redirect to={ROUTES.LIST} />
       </Switch>
     </Router>
   </div>

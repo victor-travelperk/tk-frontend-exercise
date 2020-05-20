@@ -1,4 +1,4 @@
 export { ListRecipes } from "./ListRecipes"
 export { CreateRecipe } from "./CreateRecipe"
-export { URLS } from "./urls"
+export { ROUTES } from "./constants"
 export { EditRecipe } from "./EditRecipe"

@@ -3,7 +3,7 @@ import { act, render, fireEvent, screen } from "@testing-library/react"
 import { MemoryRouter, generatePath, Route } from "react-router-dom"
 import fetchMock from "fetch-mock"
 
-import { URLS } from "../urls"
+import { ROUTES } from "../constants"
 import { EditRecipe, getEditRecipe } from "../EditRecipe"
 import { serializeRecipe } from "../utils/serializing"
 import { getRecipe } from "./stubs"
@@ -13,10 +13,10 @@ const recipe = getRecipe()
 const renderEditRecipe = () =>
   render(
     <MemoryRouter
-      initialEntries={[generatePath(URLS.EDIT, { id: recipe.id })]}
+      initialEntries={[generatePath(ROUTES.EDIT, { id: recipe.id })]}
       initialIndex={0}
     >
-      <Route path={URLS.EDIT}>
+      <Route path={ROUTES.EDIT}>
         <EditRecipe />
       </Route>
     </MemoryRouter>,
