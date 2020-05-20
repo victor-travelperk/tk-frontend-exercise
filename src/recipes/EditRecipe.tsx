@@ -117,7 +117,7 @@ export const EditRecipe = () => {
         </Box>
 
         <h2>Ingredients*</h2>
-        <div>
+        <div style={{ display: "flex" }}>
           <Input
             onChange={(event) => setNewIngredient(event.target.value)}
             value={newIngredient}
@@ -128,6 +128,7 @@ export const EditRecipe = () => {
             onClick={() => addIngredient()}
             disabled={newIngredient === ""}
             backgroundColor={COLORS.QUICK_SILVER}
+            style={{ flexBasis: "0" }}
           >
             ADD
           </Button>
