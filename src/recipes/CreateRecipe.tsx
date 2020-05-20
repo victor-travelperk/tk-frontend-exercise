@@ -2,6 +2,7 @@ import React, { useState } from "react"
 
 import { COLORS } from "../shared/styles"
 import { Box, PageHeader, Wrapper } from "../shared/components"
+import { API_HOST } from "../shared/constants"
 import {
   Button,
   ButtonRemoveItem,
@@ -13,7 +14,7 @@ import {
 import { NotificationType } from "./components/Notification"
 import { serializeRecipe } from "./utils/serializing"
 
-export const CREATE_RECIPE_URL = "http://127.0.0.1:8000/api/recipe/recipes/"
+export const CREATE_RECIPE_URL = `${API_HOST}/api/recipe/recipes/`
 
 export const CreateRecipe = () => {
   const [name, setName] = useState<string>("")

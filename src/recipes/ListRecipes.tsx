@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react"
-import styled from "styled-components"
 import { Box, PageHeader, Wrapper } from "../shared/components"
+import { API_HOST } from "../shared/constants"
 import { Recipe } from "./types"
 import { RecipeCard, NoRecipesPlaceholder, Notification } from "./components"
 import { NotificationType } from "./components/Notification"
 
-export const LIST_RECIPES_URL = "http://localhost:8000/api/recipe/recipes/"
+export const LIST_RECIPES_URL = `${API_HOST}/api/recipe/recipes/`
 export const getRemoveRecipeUrl = (id: number) =>
-  `http://localhost:8000/api/recipe/recipes/${id}/`
-
-const RecipeList = styled.div`
-  display: grid;
-  grid-row-gap: 0.5rem;
-`
+  `${API_HOST}/api/recipe/recipes/${id}/`
 
 export const ListRecipes = () => {
   const [recipes, setRecipes] = useState<Recipe[] | null>(null)
@@ -84,7 +79,7 @@ export const ListRecipes = () => {
         </NoRecipesPlaceholder>
       )}
       {recipes && (
-        <RecipeList>
+        <div style={{ display: "grid", gridRowGap: "0.5rem" }}>
           {recipes.map((recipe) => (
             <div key={recipe.id}>
               <RecipeCard
@@ -93,7 +88,7 @@ export const ListRecipes = () => {
               />
             </div>
           ))}
-        </RecipeList>
+        </div>
       )}
     </Wrapper>
   )

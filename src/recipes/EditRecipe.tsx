@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 
 import { Box, PageHeader, Wrapper } from "../shared/components"
 import { COLORS } from "../shared/styles"
+import { API_HOST } from "../shared/constants"
 import {
   Button,
   ButtonRemoveItem,
@@ -16,7 +17,7 @@ import { Recipe } from "./types"
 import { serializeRecipe } from "./utils/serializing"
 
 export const getEditRecipe = (id: number) =>
-  `http://localhost:8000/api/recipe/recipes/${id}/`
+  `${API_HOST}/api/recipe/recipes/${id}/`
 
 export const EditRecipe = () => {
   const { id } = useParams()
