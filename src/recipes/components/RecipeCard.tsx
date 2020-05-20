@@ -16,6 +16,12 @@ const EditLink = styled(Link)`
   padding: 0.5rem;
 `
 
+const RemoveRecipeButton = styled.button`
+  border: 0.1875rem solid black;
+  cursor: pointer;
+  padding: 0.5rem;
+`
+
 const ActionsWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -23,9 +29,10 @@ const ActionsWrapper = styled.div`
 
 type Props = {
   recipe: Recipe
+  onDelete: () => void
 }
 
-export const RecipeCard = ({ recipe }: Props) => (
+export const RecipeCard = ({ recipe, onDelete }: Props) => (
   <Wrapper>
     <h2>{recipe.name}</h2>
     <hr />
@@ -33,6 +40,12 @@ export const RecipeCard = ({ recipe }: Props) => (
     <h3>Ingredients:</h3>
     <p>{formatIngredients(recipe.ingredients)}</p>
     <ActionsWrapper>
+      <RemoveRecipeButton
+        aria-label={`remove recipe ${recipe.name}`}
+        onClick={onDelete}
+      >
+        Delete
+      </RemoveRecipeButton>
       <EditLink to={generatePath(URLS.EDIT, { id: recipe.id })}>Edit</EditLink>
     </ActionsWrapper>
   </Wrapper>

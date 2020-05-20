@@ -1,7 +1,6 @@
 export { Button } from "./Button"
 export { Input } from "./Input"
 export { Label } from "./Label"
-export { LoadErrorMessage } from "./LoadErrorMessage"
 export { NoRecipesPlaceholder } from "./NoRecipesPlaceholder"
 export { Notification } from "./Notification"
 export { RecipeCard } from "./RecipeCard"

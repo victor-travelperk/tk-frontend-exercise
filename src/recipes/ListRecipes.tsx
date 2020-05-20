@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { PageHeader, Wrapper } from "../shared/components"
 import { Recipe } from "./types"
-import {
-  RecipeCard,
-  NoRecipesPlaceholder,
-  LoadErrorMessage,
-} from "./components"
+import { RecipeCard, NoRecipesPlaceholder, Notification } from "./components"
+import { NotificationType } from "./components/Notification"
 
 export const LIST_RECIPES_URL = "http://localhost:8000/api/recipe/recipes/"
+export const getRemoveRecipeUrl = (id: number) =>
+  `http://localhost:8000/api/recipe/recipes/${id}/`
 
 const RecipeList = styled.div`
   display: grid;
@@ -16,36 +15,80 @@ const RecipeList = styled.div`
 `
 
 export const ListRecipes = () => {
-  const [recipes, setRecipes] = useState<Recipe[]>([])
-  const [error, setError] = useState<boolean>(false)
+  const [recipes, setRecipes] = useState<Recipe[] | null>(null)
+  const [notification, setNotification] = useState<{
+    type: NotificationType
+    content: string
+  } | null>(null)
+
+  const removeRecipe = (recipeId: number) => {
+    const shouldRemove = window.confirm(
+      "Are you sure you want to delete the recipe?",
+    )
+    if (shouldRemove) {
+      fetch(getRemoveRecipeUrl(recipeId), {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (response.ok) {
+            fetchRecipes()
+            return
+          }
+          throw new Error("Non-successful status code")
+        })
+        .catch(() =>
+          setNotification({
+            type: "DANGER",
+            content: "There was an error while deleting recipe",
+          }),
+        )
+    }
+  }
+
+  const fetchRecipes = () => {
+    fetch(LIST_RECIPES_URL)
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        }
+        throw new Error("Non-successful status code")
+      })
+      .then((data) => setRecipes(data))
+      .catch(() =>
+        setNotification({
+          type: "DANGER",
+          content: "Wops! An error occurred while retrieving the recipes",
+        }),
+      )
+  }
 
   useEffect(() => {
-    fetch(LIST_RECIPES_URL)
-      .then((response) => response.json())
-      .then((data) => setRecipes(data))
-      .catch(() => setError(true))
+    fetchRecipes()
   }, [])
 
-  const showEmtpyPlaceholder = !error && recipes.length === 0
+  const showEmtpyPlaceholder = recipes && recipes.length === 0
 
   return (
     <Wrapper>
       <PageHeader>Recipe Library</PageHeader>
-      {error && (
-        <LoadErrorMessage>
-          Wops! An error occurred while retrieving the recipes
-        </LoadErrorMessage>
+      {notification && (
+        <Notification type={notification.type}>
+          {notification.content}
+        </Notification>
       )}
       {showEmtpyPlaceholder && (
         <NoRecipesPlaceholder>
           No recipes yet, go create some!
         </NoRecipesPlaceholder>
       )}
-      {!error && (
+      {recipes && (
         <RecipeList>
           {recipes.map((recipe) => (
             <div key={recipe.id}>
-              <RecipeCard recipe={recipe} />
+              <RecipeCard
+                recipe={recipe}
+                onDelete={() => removeRecipe(recipe.id)}
+              />
             </div>
           ))}
         </RecipeList>
