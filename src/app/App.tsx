@@ -10,21 +10,25 @@ import { NavBar } from "./components"
 import { CreateRecipe, ListRecipes, EditRecipe, ROUTES } from "../recipes"
 
 export const App = () => (
-  <div>
+  <>
     <Router>
-      <NavBar />
-      <Switch>
+      <header>
+        <NavBar />
+      </header>
+      <main>
+        <Switch>
           <Route exact path={ROUTES.CREATE}>
-          <CreateRecipe />
-        </Route>
+            <CreateRecipe />
+          </Route>
           <Route exact path={ROUTES.LIST}>
-          <ListRecipes />
-        </Route>
+            <ListRecipes />
+          </Route>
           <Route exact path={ROUTES.EDIT}>
-          <EditRecipe />
-        </Route>
+            <EditRecipe />
+          </Route>
           <Redirect to={ROUTES.LIST} />
-      </Switch>
+        </Switch>
+      </main>
     </Router>
-  </div>
+  </>
 )
