@@ -27,6 +27,7 @@ export const CreateRecipe = () => {
   } | null>(null)
 
   const addIngredient = () => {
+    debugger
     setIngredients(ingredients.concat([newIngredient]))
     setNewIngredient("")
   }
@@ -115,6 +116,12 @@ export const CreateRecipe = () => {
               value={newIngredient}
               placeholder="New ingredient"
               maxLength={50}
+              onKeyPress={(event) => {
+                if (event.key === "Enter") {
+                  addIngredient()
+                  event.preventDefault()
+                }
+              }}
             />
             <Button
               type="button"

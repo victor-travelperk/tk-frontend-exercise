@@ -133,6 +133,12 @@ export const EditRecipe = () => {
             value={newIngredient}
             placeholder="New ingredient"
             maxLength={50}
+            onKeyPress={(event) => {
+              if (event.key === "Enter") {
+                addIngredient()
+                event.preventDefault()
+              }
+            }}
           />
           <Button
             type="button"
