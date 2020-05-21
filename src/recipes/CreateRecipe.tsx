@@ -47,20 +47,24 @@ export const CreateRecipe = () => {
         values.description,
         values.ingredients,
       ),
-    }).then((response) => {
-      if (response.ok) {
-        setNotification({
-          type: "SUCCESS",
-          content: "Recipe created!",
-        })
-        resetForm({})
-      } else {
+    })
+      .then((response) => {
+        if (response.ok) {
+          setNotification({
+            type: "SUCCESS",
+            content: "Recipe created!",
+          })
+          resetForm({})
+          return
+        }
+        throw new Error("Non-successful status code")
+      })
+      .catch(() =>
         setNotification({
           type: "DANGER",
           content: "Error creating recipe",
-        })
-      }
-    })
+        }),
+      )
   }
 
   return (
