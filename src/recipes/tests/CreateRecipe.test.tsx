@@ -149,4 +149,37 @@ describe("CreateRecipe", () => {
       expect(await screen.findByText(ingredient)).toBeInTheDocument()
     }
   })
+
+  it("displays validation errors", async () => {
+    renderCreateRecipe()
+
+    // Validate form fields
+    const nameInput = screen.getByLabelText("Name*")
+    fireEvent.change(nameInput, {
+      target: { value: "" },
+    })
+
+    await act(async () => {
+      fireEvent.blur(nameInput)
+    })
+
+    expect(screen.getByText("Required")).toBeInTheDocument()
+
+    const descriptionInput = screen.getByLabelText("Description*")
+    fireEvent.change(descriptionInput, {
+      target: { value: "" },
+    })
+    await act(async () => {
+      fireEvent.blur(descriptionInput)
+    })
+
+    expect(await screen.findAllByText("Required")).toHaveLength(2)
+
+    // Trigger ingredients message
+    fireEvent.click(screen.getByText("Create"))
+
+    expect(
+      await screen.findByText("At least one ingredient is required"),
+    ).toBeInTheDocument()
+  })
 })

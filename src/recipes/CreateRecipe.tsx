@@ -151,7 +151,9 @@ export const CreateRecipe = () => {
                           </ButtonRemoveItem>
                         </li>
                       ))}
-                      {errors.ingredients}
+                      {errors.ingredients && touched.ingredients && (
+                        <ValidationError>{errors.ingredients}</ValidationError>
+                      )}
                     </ul>
                   </>
                 )}

@@ -23,11 +23,11 @@ const renderEditRecipe = () =>
     </MemoryRouter>,
   )
 
-afterEach(() => {
-  fetchMock.reset()
-})
-
 describe("EditRecipe", () => {
+  const editUrl = getEditRecipe(recipe.id)
+  beforeEach(() => {
+    fetchMock.get(editUrl, recipe)
+  })
   it("successfully edits recipe", async () => {
     const editUrl = getEditRecipe(recipe.id)
     fetchMock.get(editUrl, recipe)
@@ -121,7 +121,12 @@ describe("EditRecipe", () => {
   })
 
   it("can add ingredients by pressing enter", async () => {
-    renderEditRecipe()
+    const editUrl = getEditRecipe(recipe.id)
+    fetchMock.get(editUrl, recipe)
+
+    await act(async () => {
+      renderEditRecipe()
+    })
 
     const ingredients = [faker.random.word(), faker.random.word()]
 
@@ -139,5 +144,50 @@ describe("EditRecipe", () => {
       // New ingredient should've been added to the list
       expect(await screen.findByText(ingredient)).toBeInTheDocument()
     }
+  })
+
+  it("displays validation errors", async () => {
+    await act(async () => {
+      renderEditRecipe()
+    })
+
+    // Validate form fields
+    const nameInput = screen.getByLabelText("Name*")
+    fireEvent.change(nameInput, {
+      target: { value: "" },
+    })
+
+    await act(async () => {
+      fireEvent.blur(nameInput)
+    })
+
+    expect(screen.getByText("Required")).toBeInTheDocument()
+
+    const descriptionInput = screen.getByLabelText("Description*")
+    fireEvent.change(descriptionInput, {
+      target: { value: "" },
+    })
+    await act(async () => {
+      fireEvent.blur(descriptionInput)
+    })
+
+    expect(await screen.findAllByText("Required")).toHaveLength(2)
+
+    // Remove existing ingredients
+    for (const ingredient of recipe.ingredients) {
+      // Remove ingredient
+      await act(async () => {
+        fireEvent.click(
+          screen.getByLabelText(`remove ingredient ${ingredient.name}`),
+        )
+      })
+    }
+
+    // Trigger ingredients message
+    fireEvent.click(screen.getByText("Update"))
+
+    expect(
+      await screen.findByText("At least one ingredient is required"),
+    ).toBeInTheDocument()
   })
 })
