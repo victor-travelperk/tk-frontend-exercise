@@ -1,0 +1,8 @@
+export const COLORS = {
+  CULTURED: '#E8F1F2',
+  GREEN_SHEEN: '#70A9A1',
+  TAWNY: '#CC5803',
+  WHITE: '#FDFDFF',
+  QUICK_SILVER: '#E6E6EA',
+  BLACK: '#000009',
+}
