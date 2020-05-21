@@ -91,7 +91,7 @@ export const CreateRecipe = () => {
             <Form>
               <Box mb="2">
                 <Label htmlFor="name">Name*</Label>
-                <Field as={Input} name="name" id="name" />
+                <Field as={Input} name="name" id="name" autoFocus />
                 {errors.name && touched.name && (
                   <ValidationError>{errors.name}</ValidationError>
                 )}
