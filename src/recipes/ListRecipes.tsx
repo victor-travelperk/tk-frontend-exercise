@@ -7,15 +7,21 @@ import {
   NoRecipesPlaceholder,
   Notification,
   LoadingMessage,
+  Input,
+  Button,
 } from "./components"
 import { NotificationType } from "./components/Notification"
 
-export const LIST_RECIPES_URL = `${API_HOST}/api/recipe/recipes/`
+export const getListRecipesUrl = (name?: string) =>
+  name
+    ? `${API_HOST}/api/recipe/recipes/?name=${name}`
+    : `${API_HOST}/api/recipe/recipes/`
 export const getRemoveRecipeUrl = (id: number) =>
   `${API_HOST}/api/recipe/recipes/${id}/`
 
 export const ListRecipes = () => {
   const [recipes, setRecipes] = useState<Recipe[] | null>(null)
+  const [nameFilter, setNameFilter] = useState<string>("")
   const [notification, setNotification] = useState<{
     type: NotificationType
     content: string
@@ -45,8 +51,8 @@ export const ListRecipes = () => {
     }
   }
 
-  const fetchRecipes = () => {
-    fetch(LIST_RECIPES_URL)
+  const fetchRecipes = (name?: string) => {
+    fetch(getListRecipesUrl(name))
       .then((response) => {
         if (response.ok) {
           return response.json()
@@ -85,22 +91,46 @@ export const ListRecipes = () => {
         </NoRecipesPlaceholder>
       )}
       {recipes && (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "100%",
-            gridRowGap: "0.5rem",
-          }}
-        >
-          {recipes.map((recipe) => (
-            <div key={recipe.id}>
-              <RecipeCard
-                recipe={recipe}
-                onDelete={() => removeRecipe(recipe.id)}
-              />
-            </div>
-          ))}
-        </div>
+        <>
+          <Box mb="1" style={{ display: "flex" }}>
+            <Input
+              autoFocus
+              type="text"
+              value={nameFilter}
+              onChange={(event) => setNameFilter(event.target.value)}
+              placeholder="Filter by name"
+              onKeyPress={(event) => {
+                if (event.key === "Enter") {
+                  fetchRecipes(nameFilter)
+                  event.preventDefault()
+                }
+              }}
+            />
+            <Button
+              onClick={() => fetchRecipes(nameFilter)}
+              type="button"
+              style={{ flexBasis: "0" }}
+            >
+              SEARCH
+            </Button>
+          </Box>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "100%",
+              gridRowGap: "0.5rem",
+            }}
+          >
+            {recipes.map((recipe) => (
+              <div key={recipe.id}>
+                <RecipeCard
+                  recipe={recipe}
+                  onDelete={() => removeRecipe(recipe.id)}
+                />
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </Wrapper>
   )

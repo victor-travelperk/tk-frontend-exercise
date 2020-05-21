@@ -11,7 +11,7 @@ import fetchMock from "fetch-mock"
 
 import {
   ListRecipes,
-  LIST_RECIPES_URL,
+  getListRecipesUrl,
   getRemoveRecipeUrl,
 } from "../ListRecipes"
 import { getRecipe } from "./stubs"
@@ -26,7 +26,7 @@ const renderListRecipes = () =>
 describe("ListRecipes", () => {
   it("renders recipe data", async () => {
     const recipe = getRecipe()
-    fetchMock.get(LIST_RECIPES_URL, [recipe])
+    fetchMock.get(getListRecipesUrl(), [recipe])
 
     renderListRecipes()
 
@@ -40,7 +40,7 @@ describe("ListRecipes", () => {
   })
 
   it("renders default message if no data is present", async () => {
-    fetchMock.get(LIST_RECIPES_URL, [])
+    fetchMock.get(getListRecipesUrl(), [])
     await act(async () => {
       renderListRecipes()
     })
@@ -49,7 +49,7 @@ describe("ListRecipes", () => {
   })
 
   it("renders an error message when fetch recipes fails", async () => {
-    fetchMock.get(LIST_RECIPES_URL, 500)
+    fetchMock.get(getListRecipesUrl(), 500)
     await act(async () => {
       renderListRecipes()
     })
@@ -58,6 +58,60 @@ describe("ListRecipes", () => {
     )
   })
 
+  describe("name filter", () => {
+    const firstRecipe = getRecipe()
+    const secondRecipe = getRecipe()
+
+    it("can filter by pressing enter", async () => {
+      fetchMock.get(getListRecipesUrl(), [firstRecipe, secondRecipe])
+
+      await act(async () => {
+        renderListRecipes()
+      })
+
+      const filterInput = screen.getByPlaceholderText("Filter by name")
+
+      fetchMock.get(getListRecipesUrl(secondRecipe.name), [secondRecipe])
+
+      fireEvent.change(filterInput, {
+        target: { value: secondRecipe.name },
+      })
+
+      await act(async () => {
+        fireEvent.keyPress(filterInput, {
+          key: "Enter",
+          code: "Enter",
+          charCode: 13,
+        })
+      })
+
+      expect(screen.queryByText(firstRecipe.name)).not.toBeInTheDocument()
+      expect(screen.queryByText(secondRecipe.name)).toBeInTheDocument()
+    })
+
+    it("can filter by pressing search", async () => {
+      fetchMock.get(getListRecipesUrl(), [firstRecipe, secondRecipe])
+
+      await act(async () => {
+        renderListRecipes()
+      })
+
+      const filterInput = screen.getByPlaceholderText("Filter by name")
+
+      fetchMock.get(getListRecipesUrl(secondRecipe.name), [secondRecipe])
+
+      fireEvent.change(filterInput, {
+        target: { value: secondRecipe.name },
+      })
+
+      await act(async () => {
+        fireEvent.click(screen.getByText("SEARCH"))
+      })
+
+      expect(screen.queryByText(firstRecipe.name)).not.toBeInTheDocument()
+      expect(screen.queryByText(secondRecipe.name)).toBeInTheDocument()
+    })
+  })
   describe("delete recipe", () => {
     beforeEach(() => {
       // We'll assume the user always confirms deleting
@@ -68,7 +122,7 @@ describe("ListRecipes", () => {
       const secondRecipe = getRecipe()
 
       fetchMock
-        .get(LIST_RECIPES_URL, [firstRecipe, secondRecipe])
+        .get(getListRecipesUrl(), [firstRecipe, secondRecipe])
         .delete(getRemoveRecipeUrl(firstRecipe.id), 204)
 
       await act(async () => {
@@ -76,7 +130,7 @@ describe("ListRecipes", () => {
       })
 
       // The second time get is called only the second recipe should be returned
-      fetchMock.get(LIST_RECIPES_URL, [secondRecipe])
+      fetchMock.get(getListRecipesUrl(), [secondRecipe])
 
       const removeFirstRecipeBtn = screen.getByLabelText(
         `remove recipe ${firstRecipe.name}`,
@@ -96,7 +150,7 @@ describe("ListRecipes", () => {
       const recipe = getRecipe()
 
       fetchMock
-        .get(LIST_RECIPES_URL, [recipe])
+        .get(getListRecipesUrl(), [recipe])
         .delete(getRemoveRecipeUrl(recipe.id), 500)
 
       await act(async () => {
