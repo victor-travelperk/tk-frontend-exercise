@@ -1,44 +1,52 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Recipe app 👨‍🍳
 
-## Available Scripts
+Keep a record for your secret recipes in the cloud
 
-In the project directory, you can run:
+## Overview
 
-### `npm start`
+This application allows for creating, editing, deleting and listing recipes with their respective ingredients.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Setup
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```sh
+# Install dependencies
+yarn
 
-### `npm test`
+# Run a development server
+yarn start
+```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Run tests
 
-### `npm run build`
+```sh
+yarn test
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Requirements
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+This application is currently intended to work in a local environment pointing to a backend service hosted in `http://localhost:8000` with the code from [backend repo](https://github.com/victor-travelperk/tk-backend-exercise)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This is configuered in `src/shared/constants.ts`
 
-### `npm run eject`
+## Project structure
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The project is structure by packages. They are:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- app: Shell of the application that ties together routes and basic markup.
+- recipes: Everything related to the recipe entity.
+- shared: a package with shared functionality for other packages.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### How each package is structure
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- General: Every folder should ideally offer a single point of entry via an `index.[ts][tsx]` file that exposes an API to other packages.
+- Screens: At the root level you'll find the different screens like "CreateRecipe" or "EditRecipe". These are supposed to be used as routes by the app package.
+- components: All components used for the screen components are located here.
+- tests: All tests are located here. There is one file per screen component.
 
-## Learn More
+## Commit messages
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Follow [semmantic commit](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716) for your commit messages
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Testing
+
+_NOTE_: To mock network calls, `fetch-mock` is used. There is no need to reset the mock manually since this is done in the `src/__mocks__` folder. Using this library requires `node-fetch` as a pair dependency.
