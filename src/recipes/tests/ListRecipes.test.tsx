@@ -27,10 +27,12 @@ describe("ListRecipes", () => {
   it("renders recipe data", async () => {
     const recipe = getRecipe()
     fetchMock.get(LIST_RECIPES_URL, [recipe])
-    await act(async () => {
-      renderListRecipes()
-    })
-    expect(screen.getByText(recipe.name)).toBeInTheDocument()
+
+    renderListRecipes()
+
+    expect(screen.getByText("Loading...")).toBeInTheDocument()
+
+    expect(await screen.findByText(recipe.name)).toBeInTheDocument()
     expect(screen.getByText(recipe.description)).toBeInTheDocument()
     for (const ingredient of recipe.ingredients) {
       expect(screen.getByText(ingredient.name)).toBeInTheDocument()

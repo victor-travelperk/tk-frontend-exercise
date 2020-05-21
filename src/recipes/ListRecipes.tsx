@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react"
 import { Box, PageHeader, Wrapper } from "../shared/components"
 import { API_HOST } from "../shared/constants"
 import { Recipe } from "./types"
-import { RecipeCard, NoRecipesPlaceholder, Notification } from "./components"
+import {
+  RecipeCard,
+  NoRecipesPlaceholder,
+  Notification,
+  LoadingMessage,
+} from "./components"
 import { NotificationType } from "./components/Notification"
 
 export const LIST_RECIPES_URL = `${API_HOST}/api/recipe/recipes/`
@@ -73,6 +78,7 @@ export const ListRecipes = () => {
           </Notification>
         </Box>
       )}
+      {recipes === null && <LoadingMessage>Loading...</LoadingMessage>}
       {showEmtpyPlaceholder && (
         <NoRecipesPlaceholder>
           No recipes yet, go create some!
