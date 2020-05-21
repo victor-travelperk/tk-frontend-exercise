@@ -13,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: 'Balsamiq Sans', cursive;
+    font-family: 'Roboto Slab', serif;
     overflow-x: hidden;
   }
 `
