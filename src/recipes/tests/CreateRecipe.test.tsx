@@ -1,7 +1,7 @@
 import React from "react"
 import faker from "faker"
 import { MemoryRouter } from "react-router-dom"
-import { render, screen, fireEvent } from "@testing-library/react"
+import { act, render, screen, fireEvent } from "@testing-library/react"
 import fetchMock from "fetch-mock"
 
 import { CreateRecipe, CREATE_RECIPE_URL } from "../CreateRecipe"
@@ -54,7 +54,9 @@ describe("CreateRecipe", () => {
       expect(screen.getByText(ingredient)).toBeInTheDocument()
     }
 
-    fireEvent.click(screen.getByText("Create"))
+    await act(async () => {
+      fireEvent.click(screen.getByText("Create"))
+    })
 
     const fetchCall = fetchMock.lastCall(
       CREATE_RECIPE_URL,
@@ -101,7 +103,7 @@ describe("CreateRecipe", () => {
     expect(await screen.findByText("Error creating recipe")).toBeInTheDocument()
   })
 
-  it("can remove ingredients before creating recipe", () => {
+  it("can remove ingredients before creating recipe", async () => {
     renderCreateRecipe()
 
     const ingredients = [faker.random.word(), faker.random.word()]
@@ -116,7 +118,11 @@ describe("CreateRecipe", () => {
       expect(screen.getByText(ingredient)).toBeInTheDocument()
 
       // Remove ingredient
-      fireEvent.click(screen.getByLabelText(`remove ingredient ${ingredient}`))
+      await act(async () => {
+        fireEvent.click(
+          screen.getByLabelText(`remove ingredient ${ingredient}`),
+        )
+      })
 
       // Ingredient should not be gone
       expect(screen.queryByText(ingredient)).not.toBeInTheDocument()
