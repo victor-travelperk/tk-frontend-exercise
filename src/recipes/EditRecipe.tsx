@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import { Formik, Form, Field, FieldArray } from "formik"
 
 import { Box, PageHeader, Wrapper } from "../shared/components"
-import { COLORS } from "../shared/styles"
 import { API_HOST } from "../shared/constants"
 import {
   Button,
@@ -11,36 +11,28 @@ import {
   TextArea,
   Notification,
   Input,
+  ValidationError,
 } from "./components"
 import { NotificationType } from "./components/Notification"
 import { Recipe } from "./types"
 import { serializeRecipe } from "./utils/serializing"
+import { RecipeSchema } from "./schema/validations"
 
 export const getEditRecipe = (id: number) =>
   `${API_HOST}/api/recipe/recipes/${id}/`
 
 export const EditRecipe = () => {
   const { id } = useParams()
-  const [name, setName] = useState<string>("")
-  const [description, setDescription] = useState<string>("")
+  const [cachedRecipe, setCachedRecipe] = useState({
+    name: "",
+    description: "",
+    ingredients: [] as string[],
+  })
   const [newIngredient, setNewIngredient] = useState<string>("")
-  const [ingredients, setIngredients] = useState<string[]>([])
   const [notification, setNotification] = useState<{
     type: NotificationType
     content: string
   } | null>(null)
-
-  const addIngredient = () => {
-    setIngredients(ingredients.concat([newIngredient]))
-    setNewIngredient("")
-  }
-
-  const removeIngredient = (indexToRemove: number) => {
-    const newIngredients = ingredients.filter(
-      (_, index) => index !== indexToRemove,
-    )
-    setIngredients(newIngredients)
-  }
 
   useEffect(() => {
     fetch(getEditRecipe(id))
@@ -51,9 +43,11 @@ export const EditRecipe = () => {
         throw new Error("Non-successful status code")
       })
       .then((data: Recipe) => {
-        setName(data.name)
-        setDescription(data.description)
-        setIngredients(data.ingredients.map((ingredient) => ingredient.name))
+        setCachedRecipe({
+          name: data.name,
+          description: data.description,
+          ingredients: data.ingredients.map((ingredient) => ingredient.name),
+        })
       })
       .catch(() =>
         setNotification({
@@ -63,13 +57,19 @@ export const EditRecipe = () => {
       )
   }, [id])
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
+  const handleSubmit = (values: {
+    name: string
+    description: string
+    ingredients: string[]
+  }) => {
     fetch(getEditRecipe(id), {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
-      body: serializeRecipe(name, description, ingredients),
+      body: serializeRecipe(
+        values.name,
+        values.description,
+        values.ingredients,
+      ),
     })
       .then((response) => {
         if (response.ok) {
@@ -89,90 +89,93 @@ export const EditRecipe = () => {
       })
   }
 
-  const submitDisabled =
-    name === "" || description === "" || ingredients.length === 0
-
   return (
     <Wrapper maxWidth="18.75rem">
       <PageHeader>Edit Recipe</PageHeader>
-      <form onSubmit={handleSubmit}>
-        {notification && (
-          <Box mb="2">
-            <Notification type={notification.type}>
-              {notification.content}
-            </Notification>
-          </Box>
+      {notification && (
+        <Box mb="2">
+          <Notification type={notification.type}>
+            {notification.content}
+          </Notification>
+        </Box>
+      )}
+      <Formik
+        initialValues={cachedRecipe}
+        validationSchema={RecipeSchema}
+        onSubmit={handleSubmit}
+        enableReinitialize
+      >
+        {({ errors, touched, values }) => (
+          <Form>
+            <Box mb="2">
+              <Label htmlFor="name">Name*</Label>
+              <Field as={Input} name="name" id="name" />
+              {errors.name && touched.name && (
+                <ValidationError>{errors.name}</ValidationError>
+              )}
+            </Box>
+
+            <Box mb="2">
+              <Label htmlFor="description">Description*</Label>
+              <Field as={TextArea} name="description" id="description" />
+              {errors.description && touched.description && (
+                <ValidationError>{errors.description}</ValidationError>
+              )}
+            </Box>
+
+            <h2>Ingredients*</h2>
+            <FieldArray
+              name="ingredients"
+              render={(arrayHelpers) => (
+                <>
+                  <div style={{ display: "flex" }}>
+                    <Input
+                      onChange={(event) => setNewIngredient(event.target.value)}
+                      value={newIngredient}
+                      placeholder="New ingredient"
+                      maxLength={50}
+                      onKeyPress={(event) => {
+                        if (event.key === "Enter") {
+                          arrayHelpers.push(newIngredient)
+                          setNewIngredient("")
+                          event.preventDefault()
+                        }
+                      }}
+                    />
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        arrayHelpers.push(newIngredient)
+                        setNewIngredient("")
+                      }}
+                      disabled={newIngredient === ""}
+                      style={{ flexBasis: "0" }}
+                    >
+                      ADD
+                    </Button>
+                  </div>
+                  <ul>
+                    {values.ingredients.map((ingredient, index) => (
+                      <li key={index}>
+                        {ingredient}{" "}
+                        <ButtonRemoveItem
+                          type="button"
+                          aria-label={`remove ingredient ${ingredient}`}
+                          onClick={() => arrayHelpers.remove(index)}
+                        >
+                          X
+                        </ButtonRemoveItem>
+                      </li>
+                    ))}
+                    {errors.ingredients}
+                  </ul>
+                </>
+              )}
+            />
+            <Button type="submit">Update</Button>
+          </Form>
         )}
-        <Box mb="2">
-          <Label htmlFor="name">Name*</Label>
-          <Input
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            id="name"
-            type="text"
-            required
-            maxLength={50}
-          ></Input>
-        </Box>
-
-        <Box mb="2">
-          <Label htmlFor="description">Description*</Label>
-          <TextArea
-            id="description"
-            value={description}
-            onChange={(event) => setDescription(event.target.value)}
-            required
-            maxLength={250}
-          ></TextArea>
-        </Box>
-
-        <h2>Ingredients*</h2>
-        <div style={{ display: "flex" }}>
-          <Input
-            onChange={(event) => setNewIngredient(event.target.value)}
-            value={newIngredient}
-            placeholder="New ingredient"
-            maxLength={50}
-            onKeyPress={(event) => {
-              if (event.key === "Enter") {
-                addIngredient()
-                event.preventDefault()
-              }
-            }}
-          />
-          <Button
-            type="button"
-            onClick={() => addIngredient()}
-            disabled={newIngredient === ""}
-            backgroundColor={COLORS.QUICK_SILVER}
-            style={{ flexBasis: "0" }}
-          >
-            ADD
-          </Button>
-        </div>
-
-        <ul>
-          {ingredients.length === 0 && (
-            <p>You must add at least one ingredient</p>
-          )}
-          {ingredients.map((ingredient, index) => (
-            <li key={index}>
-              {ingredient}{" "}
-              <ButtonRemoveItem
-                type="button"
-                aria-label={`remove ingredient ${ingredient}`}
-                onClick={() => removeIngredient(index)}
-              >
-                X
-              </ButtonRemoveItem>
-            </li>
-          ))}
-        </ul>
-
-        <Button type="submit" disabled={submitDisabled}>
-          Update
-        </Button>
-      </form>
+      </Formik>
     </Wrapper>
   )
 }

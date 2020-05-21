@@ -74,7 +74,9 @@ describe("EditRecipe", () => {
       fireEvent.click(screen.getByText("ADD"))
     }
 
-    fireEvent.click(screen.getByText("Update"))
+    await act(async () => {
+      fireEvent.click(screen.getByText("Update"))
+    })
 
     const fetchCall = fetchMock.lastCall(editUrl) as fetchMock.MockCall
     expect(fetchCall[1]?.body).toEqual(
