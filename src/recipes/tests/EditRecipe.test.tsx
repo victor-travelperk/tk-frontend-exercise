@@ -1,4 +1,5 @@
 import React from "react"
+import faker from "faker"
 import { act, render, fireEvent, screen } from "@testing-library/react"
 import { MemoryRouter, generatePath, Route } from "react-router-dom"
 import fetchMock from "fetch-mock"
@@ -117,5 +118,26 @@ describe("EditRecipe", () => {
     fireEvent.click(screen.getByText("Update"))
 
     expect(await screen.findByText("Error creating recipe")).toBeInTheDocument()
+  })
+
+  it("can add ingredients by pressing enter", async () => {
+    renderEditRecipe()
+
+    const ingredients = [faker.random.word(), faker.random.word()]
+
+    for (const ingredient of ingredients) {
+      const newIngredientElement = screen.getByPlaceholderText("New ingredient")
+      fireEvent.change(newIngredientElement, {
+        target: { value: ingredient },
+      })
+      fireEvent.keyPress(newIngredientElement, {
+        key: "Enter",
+        code: "Enter",
+        charCode: 13,
+      })
+
+      // New ingredient should've been added to the list
+      expect(await screen.findByText(ingredient)).toBeInTheDocument()
+    }
   })
 })

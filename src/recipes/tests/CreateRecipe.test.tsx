@@ -128,4 +128,25 @@ describe("CreateRecipe", () => {
       expect(screen.queryByText(ingredient)).not.toBeInTheDocument()
     }
   })
+
+  it("can add ingredients by pressing enter", async () => {
+    renderCreateRecipe()
+
+    const ingredients = [faker.random.word(), faker.random.word()]
+
+    for (const ingredient of ingredients) {
+      const newIngredientElement = screen.getByPlaceholderText("New ingredient")
+      fireEvent.change(newIngredientElement, {
+        target: { value: ingredient },
+      })
+      fireEvent.keyPress(newIngredientElement, {
+        key: "Enter",
+        code: "Enter",
+        charCode: 13,
+      })
+
+      // New ingredient should've been added to the list
+      expect(await screen.findByText(ingredient)).toBeInTheDocument()
+    }
+  })
 })
